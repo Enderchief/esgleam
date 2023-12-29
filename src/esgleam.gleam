@@ -2,7 +2,6 @@ import gleam/io
 import gleam/string
 import gleam/list
 import gleam/option.{type Option, None, Some}
-import gleam/regex
 import gleam/result
 import gleam/string_builder.{append}
 import simplifile
@@ -118,23 +117,10 @@ pub fn bundle(config: Config) {
 }
 
 fn do_bundle(config: Config) {
-  let assert Ok(project_name) =
-    simplifile.read("./gleam.toml")
-    |> result.map(with: fn(file) {
-      let assert Ok(re) = regex.from_string("name *= *\"(\\w[\\w_]*)\"")
-      let assert Ok(match) =
-        regex.scan(re, file)
-        |> list.first
-
-      let assert Ok(first_maybe) = list.first(match.submatches)
-      let assert Some(name): Option(String) = first_maybe
-      name
-    })
-
   let entries =
     list.map(config.entry_points, fn(entry) {
       "./build/dev/javascript/"
-      <> project_name
+      <> internal.get_project_name()
       <> "/"
       <> string.replace(entry, ".gleam", with: ".mjs")
     })

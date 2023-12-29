@@ -1,5 +1,5 @@
 name = "esgleam"
-version = "0.2.0"
+version = "0.2.1"
 gleam = ">= 0.32.0"
 
 description = "esbuild for Gleam"
