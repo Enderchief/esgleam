@@ -9,7 +9,7 @@
 
 1. Create a Gleam project as you would normally.
 
-2. Install `esbuild` (*note*: you will have to rerun this if your build directory gets wiped. i.e. after `gleam clean`)
+2. Install `esbuild`
 ```sh
 $ gleam run -m esgleam/install
 ```
