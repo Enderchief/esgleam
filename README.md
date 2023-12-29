@@ -7,12 +7,27 @@
 
 ## Quick start
 
-1. Create a Gleam project as you would normally.
+1. Create a Gleam project as you would normally and make sure you have a file in `src` with the name of your project (as specified in `gleam.toml`)
 
 2. Install `esbuild`
 ```sh
 $ gleam run -m esgleam/install
 ```
+
+3.
+```sh
+$ gleam run -m esgleam/bundle
+```
+See `/dist` for your bundled code
+
+4. To start a development server
+```sh
+$ gleam run -m esgleam/serve
+```
+
+## Advanced Usage
+
+(Follow steps 1-2)
 
 3. Create `/src/build.gleam` with the following
 ```gleam
@@ -27,12 +42,7 @@ pub fn main() {
 }
 ```
 
-4. Build for JavaScript
-```sh
-$ gleam build --target=javascript
-```
-
-5. Run your build script (in any target)
+5. Run your build script
 ```sh
 $ gleam run -m build
 ```

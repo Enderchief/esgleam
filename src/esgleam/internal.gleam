@@ -1,3 +1,8 @@
+import gleam/regex
+import gleam/result
+import gleam/list
+import gleam/option.{type Option, Some}
+import simplifile
 @target(javascript)
 import gleam/string
 
@@ -33,4 +38,20 @@ pub fn exec_shell(command: String, cwd: String) -> Nil {
   characters_to_list("cd " <> cwd <> ";" <> command)
   |> os_cmd
   Nil
+}
+
+pub fn get_project_name() -> String {
+  let assert Ok(project_name) =
+    simplifile.read("./gleam.toml")
+    |> result.map(with: fn(file) {
+      let assert Ok(re) = regex.from_string("name *= *\"(\\w[\\w_]*)\"")
+      let assert Ok(match) =
+        regex.scan(re, file)
+        |> list.first
+
+      let assert Ok(first_maybe) = list.first(match.submatches)
+      let assert Some(name): Option(String) = first_maybe
+      name
+    })
+  project_name
 }
