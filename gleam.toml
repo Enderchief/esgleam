@@ -1,5 +1,5 @@
 name = "esgleam"
-version = "0.2.1"
+version = "0.3.0"
 gleam = ">= 0.32.0"
 
 description = "esbuild for Gleam"
@@ -9,9 +9,14 @@ repository = { type = "github", user = "Enderchief", repo = "esgleam" }
 
 target = "javascript"
 
+[javascript]
+typescript_declarations = true
+# runtime = "deno"
+
 [dependencies]
 gleam_stdlib = "~> 0.34"
 simplifile = "~> 1.1"
+thoas = "~> 1.2"
 
 [dev-dependencies]
 gleeunit = "~> 1.0"

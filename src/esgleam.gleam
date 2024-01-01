@@ -127,7 +127,7 @@ fn do_bundle(config: Config) {
     |> string.join(with: " ")
 
   let cmd =
-    string_builder.from_string("./priv/bin/esbuild ")
+    string_builder.from_string("./priv/package/bin/esbuild ")
     |> append(entries)
     |> append(" --bundle")
     |> append(" --outdir=")
