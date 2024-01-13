@@ -1,3 +1,5 @@
+// #TODO: externalize this to a seperate package
+
 pub type OsName {
   Win32
   Linux

@@ -1,38 +1,33 @@
-import { exec, spawn } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { chmod, mkdir, writeFile } from 'node:fs/promises';
+// import { watch } from 'node:fs';
+// import { resolve } from 'node:path';
 import * as process from 'node:process';
 import {
-    Win32,
-    Linux,
-    Darwin,
-    Solaris,
-    Freebsd,
-    Openbsd,
-    Arm,
-    Arm64,
-    Ia32,
-    Ppc64,
-    X64,
-// @ts-expect-error
-} from './esgleam/internal/platform.mjs';
+  Win32,
+  Linux,
+  Darwin,
+  Solaris,
+  Freebsd,
+  Openbsd,
+  Arm,
+  Arm64,
+  Ia32,
+  Ppc64,
+  X64,
+  // @ts-expect-error
+} from './esgleam/mod/platform.mjs';
 // @ts-expect-error
 import { Ok, Error } from './gleam.mjs';
 
 import { entries } from './streaming_tar.mjs';
 
 export function exec_shell(command, cwd) {
-  if (typeof command === 'string')
-    exec(command, { cwd, encoding: 'utf-8' }, (_, stdout, stderr) => {
-      console.log(stdout);
-      console.error(stderr);
-    });
-  else if (typeof command === 'object') {
-    command = command.toArray();
-    spawn(command[0], command.slice(1), { cwd, stdio: 'inherit' });
-  }
+  command = command.toArray();
+  spawn(command[0], command.slice(1), { cwd, stdio: 'inherit' });
 }
 
-/** @type {Partial<Record<NodeJS.Platform, () => import('./esgleam/internal/platform.gleam').OsName$>>} */
+/** @type {Partial<Record<NodeJS.Platform, () => import('../build/dev/javascript/esgleam/esgleam/mod/platform.d.mts').OsName$>>} */
 const platform_map = {
   darwin: () => new Darwin(),
   freebsd: () => new Freebsd(),
@@ -49,7 +44,7 @@ export function get_os() {
   return new Error(res);
 }
 
-/** @type {Partial<Record<NodeJS.Architecture, () => import('./esgleam/internal/platform.gleam').Arch$>>} */
+/** @type {Partial<Record<NodeJS.Architecture, () => import('../build/dev/javascript/esgleam/esgleam/mod/platform.d.mts').Arch$>>} */
 const arch_map = {
   arm: () => new Arm(),
   arm64: () => new Arm64(),
@@ -67,8 +62,9 @@ export function get_arch() {
 
 /**
  * @param {string} url
+ * @param {VoidFunction} then 
  */
-export async function do_fetch(url) {
+export async function do_fetch(url, then) {
   const info_res = await fetch(url);
   if (!info_res.ok)
     return console.error(
@@ -78,11 +74,11 @@ export async function do_fetch(url) {
   const tarball_url = content.dist.tarball;
   console.log(`Fetching tarball from: ${tarball_url}`);
   const tarResp = await fetch(tarball_url);
-  const tarStream = tarResp.body.pipeThrough(new DecompressionStream('gzip'));
+  const tarStream = tarResp.body?.pipeThrough(new DecompressionStream('gzip'));
 
   for await (const entry of entries(tarStream)) {
     if (entry.name == 'package/bin/esbuild') {
-        console.log(entry.name);
+      console.log(entry.name);
       try {
         await mkdir('./priv/package/bin', { recursive: true });
       } catch {}
@@ -95,4 +91,18 @@ export async function do_fetch(url) {
       break;
     }
   }
+  then()
 }
+
+// export function watch_gleam() {
+//   const _path = resolve('./src');
+//   console.log(_path, process.cwd());
+//   /** @type {import("node:fs").FSWatcher} */
+//   const _watcher = watch(_path, { recursive: true }, (event, filename) => {
+//     console.log(`[${event}]: ${filename}`);
+//     spawn('gleam', ['build', '--target=javascript'], {stdio: 'inherit'})
+//   });
+//   return () => {
+//     _watcher.close();
+//   };
+// }

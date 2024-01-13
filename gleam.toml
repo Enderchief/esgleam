@@ -16,7 +16,7 @@ typescript_declarations = true
 [dependencies]
 gleam_stdlib = "~> 0.34"
 simplifile = "~> 1.1"
-thoas = "~> 1.2"
+thoas = "~> 0.4"
 
 [dev-dependencies]
 gleeunit = "~> 1.0"

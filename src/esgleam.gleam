@@ -143,6 +143,12 @@ fn do_bundle(config: Config) {
     |> string_builder.to_string
 
   io.println("$ " <> cmd)
+
+  let _ = case config.watch {
+    True -> watch_gleam()
+    False -> fn() { Nil }
+  }
+
   internal.exec_shell(cmd, ".")
 }
 
@@ -176,4 +182,13 @@ fn if_some(
     None -> ""
   }
   |> append(builder, _)
+}
+
+@target(javascript)
+@external(javascript, "./ffi_esgleam.mjs", "watch_gleam")
+pub fn watch_gleam() -> fn() -> Nil
+
+@target(erlang)
+pub fn watch_gleam() -> fn() -> Nil {
+  fn() { Nil }
 }

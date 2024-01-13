@@ -11,19 +11,12 @@ type Charlist
 
 @target(javascript)
 pub fn exec_shell(command: String, cwd: String) -> Nil {
-  case string.contains(command, contain: "|") {
-    True -> do_exec_shell(command, cwd)
-    False -> do_exec_shell_list(string.split(command, on: " "), cwd)
-  }
+  do_exec_shell(string.split(command, on: " "), cwd)
 }
 
 @target(javascript)
 @external(javascript, "../ffi_esgleam.mjs", "exec_shell")
-pub fn do_exec_shell(command: String, cwd: String) -> Nil
-
-@target(javascript)
-@external(javascript, "../ffi_esgleam.mjs", "exec_shell")
-pub fn do_exec_shell_list(command: List(String), cwd: String) -> Nil
+pub fn do_exec_shell(command: List(String), cwd: String) -> Nil
 
 @target(erlang)
 @external(erlang, "unicode", "characters_to_list")
