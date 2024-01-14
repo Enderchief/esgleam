@@ -3,9 +3,17 @@ import gleam/string
 import gleam/list
 import gleam/option.{type Option, None, Some}
 import gleam/result
-import gleam/string_builder.{append}
+import gleam/string_builder.{append, append_builder, from_strings}
 import simplifile
 import esgleam/internal
+
+/// Kind of output
+pub type Kind {
+  /// Executes the `main()` function in your entry point
+  Script
+  /// Only exports the code
+  Library
+}
 
 /// Output format of generated JavaScript
 pub type Format {
@@ -27,6 +35,9 @@ pub type Config {
     /// Output format for JavaScript. See [`Format`](#Format)   
     /// default `Esm`
     format: Format,
+    /// Kind for output   
+    /// default `Library`
+    kind: Kind,
     /// default `False`
     minify: Bool,
     /// List of [target environments](https://esbuild.github.io/api/#target)   
@@ -58,6 +69,7 @@ pub fn new(outdir path: String) -> Config {
     outdir: path,
     entry_points: [],
     format: Esm,
+    kind: Library,
     minify: False,
     target: [],
     serve: None,
@@ -76,6 +88,12 @@ pub fn entry(config: Config, path: String) -> Config {
 /// Output format. see [`Format`](#format)
 pub fn format(config: Config, format: Format) {
   Config(..config, format: format)
+}
+
+/// Kind for output. see [`Kind`](#kind)   
+/// if set to `Script`, will ignore all entries except the first and will call its `main` function.
+pub fn kind(config: Config, kind: Kind) {
+  Config(..config, kind: kind)
 }
 
 /// [Target](https://esbuild.github.io/api/#target) for transpiled JavaScript.
@@ -117,21 +135,51 @@ pub fn bundle(config: Config) {
 }
 
 fn do_bundle(config: Config) {
-  let entries =
+  let entries_list =
     list.map(config.entry_points, fn(entry) {
       "./build/dev/javascript/"
       <> internal.get_project_name()
       <> "/"
       <> string.replace(entry, ".gleam", with: ".mjs")
     })
-    |> string.join(with: " ")
+
+  let assert Ok(first_entry_rel) =
+    list.first(config.entry_points)
+    |> result.map(string.replace(_, ".gleam", with: ".mjs"))
+
+  let script_path = {
+    "./build/dev/javascript/"
+    <> internal.get_project_name()
+    <> "/"
+    <> "gleam.main.mjs"
+  }
+
+  let entries = case config.kind {
+    Script -> {
+      let content =
+        "import { main } from \"" <> "./" <> first_entry_rel <> "\";main?.();"
+      let assert Ok(_) = simplifile.write(content, to: script_path)
+      script_path
+    }
+
+    Library -> string.join(entries_list, with: " ")
+  }
 
   let cmd =
     string_builder.from_string("./priv/package/bin/esbuild ")
     |> append(entries)
     |> append(" --bundle")
-    |> append(" --outdir=")
-    |> append(config.outdir)
+    |> append_builder(case config.kind {
+      Script ->
+        from_strings([
+          " --outfile="
+          <> config.outdir
+          <> "/"
+          <> internal.get_project_name()
+          <> ".mjs",
+        ])
+      Library -> from_strings([" --outdir=", config.outdir])
+    })
     |> if_true(config.minify, " --minify")
     |> if_true(config.watch, " --watch")
     |> append(" --format=")

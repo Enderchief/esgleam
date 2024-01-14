@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { chmod, mkdir, writeFile } from 'node:fs/promises';
-// import { watch } from 'node:fs';
-// import { resolve } from 'node:path';
+import { watch } from 'node:fs';
+import { resolve } from 'node:path';
 import * as process from 'node:process';
 import {
   Win32,
@@ -94,15 +94,15 @@ export async function do_fetch(url, then) {
   then()
 }
 
-// export function watch_gleam() {
-//   const _path = resolve('./src');
-//   console.log(_path, process.cwd());
-//   /** @type {import("node:fs").FSWatcher} */
-//   const _watcher = watch(_path, { recursive: true }, (event, filename) => {
-//     console.log(`[${event}]: ${filename}`);
-//     spawn('gleam', ['build', '--target=javascript'], {stdio: 'inherit'})
-//   });
-//   return () => {
-//     _watcher.close();
-//   };
-// }
+export function watch_gleam() {
+  const _path = resolve('./src');
+  console.log(_path, process.cwd());
+  /** @type {import("node:fs").FSWatcher} */
+  const _watcher = watch(_path, { recursive: true }, (event, filename) => {
+    console.log(`[${event}]: ${filename}`);
+    spawn('gleam', ['build', '--target=javascript'], {stdio: 'inherit'})
+  });
+  return () => {
+    _watcher.close();
+  };
+}
