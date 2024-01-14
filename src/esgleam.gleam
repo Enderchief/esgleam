@@ -6,6 +6,7 @@ import gleam/result
 import gleam/string_builder.{append, append_builder, from_strings}
 import simplifile
 import esgleam/internal
+import esgleam/mod/install
 
 /// Kind of output
 pub type Kind {
@@ -190,14 +191,22 @@ fn do_bundle(config: Config) {
     |> append(config.raw)
     |> string_builder.to_string
 
-  io.println("$ " <> cmd)
+  use <-
+    case simplifile.is_file("./priv/package/bin/esbuild") {
+      False -> install.fetch_latest(_)
+      True -> fn(cb) { cb() }
+    }
 
-  let _ = case config.watch {
-    True -> watch_gleam()
-    False -> fn() { Nil }
+  {
+    io.println("$ " <> cmd)
+
+    let _ = case config.watch {
+      True -> watch_gleam()
+      False -> fn() { Nil }
+    }
+
+    internal.exec_shell(cmd, ".")
   }
-
-  internal.exec_shell(cmd, ".")
 }
 
 fn format_to_string(format: Format) {
