@@ -14,23 +14,26 @@ fn do_fetch(url: String, then: fn() -> Nil) -> Nil
 
 @target(erlang)
 /// installs esbuild and take in a callback to run post install
-pub fn fetch_version(version: String, then: fn() -> Nil) {
+pub fn fetch_from_version(version: String, then callback: fn() -> Nil) {
   let url = string.replace(base_url, "{#version}", version)
   io.println("Fetching esbuild from: " <> url)
   do_fetch(url)
-  then()
+  callback()
 }
 
 @target(javascript)
 /// installs esbuild and take in a callback to run post install
-pub fn fetch_version(version: String, then: fn() -> Nil) {
+pub fn fetch_from_version(version: String, then callback: fn() -> Nil) {
   let url = string.replace(base_url, "{#version}", version)
   io.println("Fetching esbuild from: " <> url)
-  do_fetch(url, then)
+  do_fetch(url, callback)
+}
+
+pub fn fetch_latest(then callback: fn() -> Nil) {
+  fetch_from_version(platform.get_package_name(), callback)
 }
 
 pub fn fetch() {
-  platform.get_package_name()
-  |> fetch_version(fn() { io.println("Installed esbuild") })
+  fetch_latest(fn() { io.println("Installed esbuild") })
   Nil
 }
