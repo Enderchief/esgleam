@@ -1,5 +1,9 @@
+## 0.4.3 (2024-01-14)
+- [`800dcf5`](https://github.com/Enderchief/esgleam/commit/800dcf540a7fde8f6b2728a478545e54c6500355) Replace esbuild auto install with a warning.
+- [`800dcf5`](https://github.com/Enderchief/esgleam/commit/800dcf540a7fde8f6b2728a478545e54c6500355) Change bundle to synchronous for the JS target by using `spawnSync`.
+
 ## 0.4.2 (2024-01-14)
-- [`b7a1ab8`](https://github.com/Enderchief/esgleam/commit/b7a1ab8bbb89f89154981cd735b50411081933e8) Install esgleam automatically if not installed.
+- [`b7a1ab8`](https://github.com/Enderchief/esgleam/commit/b7a1ab8bbb89f89154981cd735b50411081933e8) Install esbuild automatically if not installed.
 
 ## 0.4.1 (2024-01-13)
 - [`00069ae`](https://github.com/Enderchief/esgleam/commit/00069ae870f63d16c54bd6320225b62d28390309) Rename `fetch_version` to `fetch_from_version`. 
