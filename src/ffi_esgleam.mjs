@@ -1,4 +1,5 @@
-import { spawn } from 'node:child_process';
+// @ts-check
+import { spawnSync } from 'node:child_process';
 import { chmod, mkdir, writeFile } from 'node:fs/promises';
 import { watch } from 'node:fs';
 import { resolve } from 'node:path';
@@ -24,7 +25,7 @@ import { entries } from './streaming_tar.mjs';
 
 export function exec_shell(command, cwd) {
   command = command.toArray();
-  spawn(command[0], command.slice(1), { cwd, stdio: 'inherit' });
+  spawnSync(command[0], command.slice(1), { cwd, stdio: 'inherit' });
 }
 
 /** @type {Partial<Record<NodeJS.Platform, () => import('../build/dev/javascript/esgleam/esgleam/mod/platform.d.mts').OsName$>>} */
@@ -39,7 +40,7 @@ const platform_map = {
 
 export function get_os() {
   const platform = process.platform;
-  const res = platform_map[platform]();
+  const res = platform_map[platform]?.();
   if (res) return new Ok(res);
   return new Error(res);
 }
@@ -55,7 +56,7 @@ const arch_map = {
 
 export function get_arch() {
   const arch = process.arch;
-  const res = arch_map[arch]();
+  const res = arch_map[arch]?.();
   if (res) return new Ok(res);
   return new Error(res);
 }
@@ -100,7 +101,7 @@ export function watch_gleam() {
   /** @type {import("node:fs").FSWatcher} */
   const _watcher = watch(_path, { recursive: true }, (event, filename) => {
     console.log(`[${event}]: ${filename}`);
-    spawn('gleam', ['build', '--target=javascript'], {stdio: 'inherit'})
+    spawnSync('gleam', ['build', '--target=javascript'], {stdio: 'inherit'});
   });
   return () => {
     _watcher.close();
