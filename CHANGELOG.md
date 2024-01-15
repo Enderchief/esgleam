@@ -1,3 +1,7 @@
+## 0.4.4 (2024-01-14)
+- [`ddf6037`](https://github.com/Enderchief/esgleam/commit/ddf6037ac7edc87e2e7f05675512749242b39f2c) Readded esbuild autoinstall.
+- [`ddf6037`](https://github.com/Enderchief/esgleam/commit/ddf6037ac7edc87e2e7f05675512749242b39f2c) Install interface in Gleam is now synchronous.
+
 ## 0.4.3 (2024-01-14)
 - [`800dcf5`](https://github.com/Enderchief/esgleam/commit/800dcf540a7fde8f6b2728a478545e54c6500355) Replace esbuild auto install with a warning.
 - [`800dcf5`](https://github.com/Enderchief/esgleam/commit/800dcf540a7fde8f6b2728a478545e54c6500355) Change bundle to synchronous for the JS target by using `spawnSync`.
