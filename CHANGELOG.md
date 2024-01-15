@@ -1,4 +1,4 @@
-## 0.4.4 (2024-01-14)
+## 0.4.5 (2024-01-14)
 - [`ddf6037`](https://github.com/Enderchief/esgleam/commit/ddf6037ac7edc87e2e7f05675512749242b39f2c) Readded esbuild autoinstall.
 - [`ddf6037`](https://github.com/Enderchief/esgleam/commit/ddf6037ac7edc87e2e7f05675512749242b39f2c) Install interface in Gleam is now synchronous.
 
