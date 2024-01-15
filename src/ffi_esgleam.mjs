@@ -95,6 +95,10 @@ export async function do_fetch(url, then) {
   then()
 }
 
+export function install() {
+  spawnSync('gleam', ['run', '-m', 'esgleam/install']);
+}
+
 export function watch_gleam() {
   const _path = resolve('./src');
   console.log(_path, process.cwd());

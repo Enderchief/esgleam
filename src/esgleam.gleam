@@ -6,6 +6,7 @@ import gleam/result
 import gleam/string_builder.{append, append_builder, from_strings}
 import simplifile
 import esgleam/internal
+import esgleam/mod/install
 
 /// Kind of output
 pub type Kind {
@@ -191,21 +192,18 @@ fn do_bundle(config: Config) {
     |> string_builder.to_string
 
   case simplifile.is_file("./priv/package/bin/esbuild") {
-    False ->
-      io.println_error(
-        "esbuild is not installed, run `gleam run -m esgleam/install` and then rerun this command.",
-      )
-    True -> {
-      io.println("$ " <> cmd)
-
-      case config.watch {
-        True -> watch_gleam()
-        False -> fn() { Nil }
-      }
-
-      internal.exec_shell(cmd, ".")
-    }
+    False -> install.fetch()
+    True -> Nil
   }
+
+  io.println("$ " <> cmd)
+
+  case config.watch {
+    True -> watch_gleam()
+    False -> fn() { Nil }
+  }
+
+  internal.exec_shell(cmd, ".")
 }
 
 fn format_to_string(format: Format) {
