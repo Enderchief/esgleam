@@ -49,3 +49,12 @@ pub fn get_package_name() {
 
   "@esbuild/" <> os_str <> "-" <> arch_str
 }
+
+pub fn get_exe_name() {
+  let assert Ok(os) = get_os()
+
+  case os {
+    Win32 -> "esbuild.exe"
+    _ -> "esbuild"
+  }
+}

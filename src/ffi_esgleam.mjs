@@ -78,17 +78,17 @@ export async function do_fetch(url, then) {
   const tarStream = tarResp.body?.pipeThrough(new DecompressionStream('gzip'));
 
   for await (const entry of entries(tarStream)) {
-    if (entry.name == 'package/bin/esbuild') {
-      console.log(entry.name);
+    if (/(^|\/)esbuild(\.exe)?$/.test(entry.name)) {
       try {
         await mkdir('./priv/package/bin', { recursive: true });
       } catch {}
+      const exePath = entry.name.endsWith('.exe') ? './priv/package/bin/esbuild.exe' : './priv/package/bin/esbuild';
       await writeFile(
-        './priv/package/bin/esbuild',
+        exePath,
         Buffer.from(await entry.arrayBuffer()),
         { encoding: 'binary' }
       );
-      await chmod('./priv/package/bin/esbuild', 0o777);
+      await chmod(exePath, 0o777);
       break;
     }
   }
