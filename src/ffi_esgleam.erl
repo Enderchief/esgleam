@@ -63,5 +63,12 @@ do_fetch(Url) ->
 fetch_tarball(Url) ->
     io:fwrite("Fetching tarball from: ~s\n", [Url]),
     {ok, {{_, 200, _}, _, Binary}} = httpc:request(get, {Url, []}, [], [{body_format, binary}]),
-    ok = erl_tar:extract({binary, Binary}, [compressed, verbose, {cwd, "./priv"}, {files, ["package/bin/esbuild"]}])
+    case get_os() of
+        {win32, _} -> {
+            ok = erl_tar:extract({binary, Binary}, [compressed, verbose, {cwd, "./priv"}, {files, ["package/bin/esbuild.exe"]}])
+        };
+        _ -> {
+            ok = erl_tar:extract({binary, Binary}, [compressed, verbose, {cwd, "./priv"}, {files, ["package/bin/esbuild"]}])
+        }
+    end
 .
