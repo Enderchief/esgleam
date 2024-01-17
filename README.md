@@ -5,27 +5,29 @@
 
 *esbuild for Gleam that works on Erlang & JavaScript.*
 
-## Quick start
-
+## [Quick start](#quick-start)
+<span id="quick-start"></span>
 1. Create a Gleam project as you would normally and make sure you have a file in `src` with the name of your project (as specified in `gleam.toml`)
 
 2. Install `esbuild`
 ```sh
-$ gleam run -m esgleam/install
+gleam run -m esgleam/install
 ```
 
 3.
 ```sh
-$ gleam run -m esgleam/bundle
+gleam run -m esgleam/bundle
 ```
 See `/dist` for your bundled code
 
 4. To start a development server
 ```sh
-$ gleam run -m esgleam/serve
+gleam run -m esgleam/serve
 ```
 
-## Advanced Usage
+
+## [Advanced Usage](#advanced-usage)
+<span id="advanced-usage"></span>
 
 (Follow steps 1-2)
 
@@ -36,18 +38,48 @@ import esgleam
 pub fn main() {
    esgleam.new("./dist/static")
    |> esgleam.entry("main.gleam")
-   |> esgleam.target("esnext")
-   |> esgleam.target("firefox110")
    |> esgleam.bundle
 }
 ```
 
+See [esgleam](https://hexdocs.pm/esgleam/esgleam.html) for all config options and their default values.
+
 5. Run your build script
 ```sh
-$ gleam run -m build
+gleam run -m build
 ```
 
-## Installation
+## [CLI overview](#cli-overview)
+<span id="cli-overview"></span>
+
+### Install
+Install esbuild.
+```sh
+gleam run -m esgleam/install
+```
+
+### Bundle
+Bundle the project into a library with `src/{project_name}.gleam` as your entry point and `./dist/{project_name}.js` as your output file.
+```sh
+gleam run -m esgleam/bundle
+```
+
+### App
+Bundle the project into a single file to run with `src/{project_name}.gleam` as your entry point and `./dist/{project_name}.js` as your output file.
+Similar to just running `gleam run`.
+```sh
+gleam run -m esgleam/app
+```
+
+### Serve
+Starts a dev server, serving the `dist` directory as `/`.
+```sh
+gleam run -m esgleam/serve
+```
+
+
+## [Installation](#installation)
+<span id="installation"></span>
 
 If available on Hex this package can be added to your Gleam project:
 

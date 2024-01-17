@@ -131,6 +131,7 @@ pub fn raw(config: Config, args: String) {
   Config(..config, raw: string.append(to: " ", suffix: args))
 }
 
+/// Executes `esbuild` with the provided config parsed as CLI arguments.
 pub fn bundle(config: Config) {
   simplifile.create_directory_all(config.outdir)
   |> result.map(fn(_) { do_bundle(config) })
