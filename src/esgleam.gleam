@@ -7,6 +7,7 @@ import gleam/string_builder.{append, append_builder, from_strings}
 import simplifile
 import esgleam/internal
 import esgleam/mod/install
+import esgleam/mod/platform.{get_exe_name}
 
 /// Kind of output
 pub type Kind {
@@ -166,8 +167,10 @@ fn do_bundle(config: Config) {
     Library -> string.join(entries_list, with: " ")
   }
 
+  let exe_path = "./priv/package/bin/" <> get_exe_name()
+
   let cmd =
-    string_builder.from_string("./priv/package/bin/esbuild ")
+    string_builder.from_string(exe_path <> " ")
     |> append(entries)
     |> append(" --bundle")
     |> append_builder(case config.kind {
@@ -191,7 +194,7 @@ fn do_bundle(config: Config) {
     |> append(config.raw)
     |> string_builder.to_string
 
-  case simplifile.is_file("./priv/package/bin/esbuild") {
+  case simplifile.is_file(exe_path) {
     False -> install.fetch()
     True -> Nil
   }
