@@ -1,4 +1,6 @@
-## 0.4.5 (2024-01-14)
+## 0.4.6 (2024-01-16)
+- [`0b071047`](https://github.com/Enderchief/esgleam/commit/0b071047051c29b6dadc62fb5b69799c80ff3ec9) Use correct esbuild executable on Windows. (#5 thanks to @xhh)
+## 0.4.5 (2024-01-15)
 - [`ddf6037`](https://github.com/Enderchief/esgleam/commit/ddf6037ac7edc87e2e7f05675512749242b39f2c) Readded esbuild autoinstall.
 - [`ddf6037`](https://github.com/Enderchief/esgleam/commit/ddf6037ac7edc87e2e7f05675512749242b39f2c) Install interface in Gleam is now synchronous.
 
