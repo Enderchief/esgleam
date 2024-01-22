@@ -27,6 +27,16 @@ pub type Format {
   Iife
 }
 
+/// [Platform](https://esbuild.github.io/api/#platform)
+pub type Platform {
+  /// Build platform independed code
+  Neutral
+  /// Build browser compatable code (default)
+  Browser
+  /// Build for Node
+  Node
+}
+
 /// Config for esbuild
 pub type Config {
   Config(
@@ -51,6 +61,10 @@ pub type Config {
     /// Generate sourcemap for JavaScript   
     /// default `False`
     sourcemap: Bool,
+    /// Platform for the output   
+    /// See [esbuild/platform](https://esbuild.github.io/api/#platform) for what each type does   
+    /// default `Neutral`
+    platform: Option(Platform),
     /// Enable watchmode. Bundles files on change   
     /// Note: `gleam build` need to be run manually   
     /// default `False`
@@ -76,6 +90,7 @@ pub fn new(outdir path: String) -> Config {
     target: [],
     serve: None,
     sourcemap: False,
+    platform: None,
     watch: False,
     raw: "",
   )
@@ -118,6 +133,11 @@ pub fn minify(config: Config, do_minify: Bool) {
 /// Start a development server on http://127.0.0.1:8000 with `path` being `/`
 pub fn serve(config: Config, dir path: String) {
   Config(..config, serve: Some(path))
+}
+
+/// Generate code for a specified platform
+pub fn platform(config: Config, platform platform: Platform) {
+  Config(..config, platform: Some(platform))
 }
 
 // #TODO: Setup file watcher for all targets
@@ -186,6 +206,16 @@ fn do_bundle(config: Config) {
       Library -> from_strings([" --outdir=", config.outdir])
     })
     |> if_true(config.minify, " --minify")
+    |> if_some(
+      option.map(config.platform, fn(platform) {
+        case platform {
+          Neutral -> "neutral"
+          Node -> "node"
+          Browser -> "browser"
+        }
+      }),
+      " --platform=",
+    )
     |> if_true(config.watch, " --watch")
     |> append(" --format=")
     |> append(format_to_string(config.format))
