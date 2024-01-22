@@ -1,3 +1,6 @@
+## 0.4.5 (2024-01-21)
+- [`685bffe3`](https://github.com/Enderchief/esgleam/commit/685bffe381745d3e3bc69a1b82ec88bd7f8fc32b) Fix issue with os and arch checking not working on Deno leading to an error.
+
 ## 0.4.6 (2024-01-16)
 - [`0b071047`](https://github.com/Enderchief/esgleam/commit/0b071047051c29b6dadc62fb5b69799c80ff3ec9) Use correct esbuild executable on Windows. (#5 thanks to @xhh)
 ## 0.4.5 (2024-01-15)
