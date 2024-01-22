@@ -1,9 +1,9 @@
 import gleam/regex
 import gleam/result
 import gleam/list
+import gleam/io
 import gleam/option.{type Option, Some}
 import simplifile
-@target(javascript)
 import gleam/string
 
 @target(erlang)
@@ -27,9 +27,17 @@ fn characters_to_list(chacters: String) -> Charlist
 fn os_cmd(command: Charlist) -> Nil
 
 @target(erlang)
+@external(erlang, "ffi_esgleam", "do_exec")
+fn exec_erl(cmd: String, args: List(String)) -> a
+
+@target(erlang)
 pub fn exec_shell(command: String, cwd: String) -> Nil {
-  characters_to_list("cd " <> cwd <> ";" <> command)
-  |> os_cmd
+  let [cmd, ..args] =
+    string.split(command, on: " ")
+    |> io.debug
+  // characters_to_list("cd " <> cwd <> ";" <> command)
+  exec_erl(cmd, args)
+  |> io.debug
   Nil
 }
 

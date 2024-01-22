@@ -3,7 +3,8 @@ import { spawnSync } from 'node:child_process';
 import { chmod, mkdir, writeFile } from 'node:fs/promises';
 import { watch } from 'node:fs';
 import { resolve } from 'node:path';
-import * as process from 'node:process';
+import { Buffer } from 'node:buffer';
+import { default as process } from 'node:process';
 import {
   Win32,
   Linux,
@@ -40,6 +41,7 @@ const platform_map = {
 
 export function get_os() {
   const platform = process.platform;
+  console.log('PLATFORM IS: [ ', platform, " ]");
   const res = platform_map[platform]?.();
   if (res) return new Ok(res);
   return new Error(res);

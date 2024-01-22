@@ -11,7 +11,7 @@ target = "javascript"
 
 [javascript]
 typescript_declarations = true
-# runtime = "deno"
+runtime = "deno"
 
 [dependencies]
 gleam_stdlib = "~> 0.34"
