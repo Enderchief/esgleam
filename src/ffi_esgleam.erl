@@ -1,6 +1,6 @@
 -module(ffi_esgleam).
 
--export([get_arch/0, get_os/0, do_fetch/1]).
+-export([get_arch/0, get_os/0, do_fetch/1, do_exec/2]).
 
 -spec get_arch() -> {ok, x64 | ia32 | arm64 | arm | ppc64} | {err, string()}.
 get_arch() ->
@@ -70,5 +70,34 @@ fetch_tarball(Url) ->
         _ -> {
             ok = erl_tar:extract({binary, Binary}, [compressed, verbose, {cwd, "./priv"}, {files, ["package/bin/esbuild"]}])
         }
+    end
+.
+
+-spec do_exec(string(), list(string())) -> a.
+do_exec(Cmd, Args) ->
+    % Exec = case get_os() of
+    %     {win32, _} -> "./priv/bin/esbuild.exe";
+    %     _ -> "./priv/bin/esbuild"
+    % end,
+    Port = open_port({spawn_executable, Cmd}, [exit_status, stderr_to_stdout, {args, Args}]),
+    do_recieve(Port)
+    % receive {Port, {exit_status, Code}} -> Code end
+    % get_port_data(Port)
+.
+
+do_recieve(Port) ->
+    receive 
+        {Port, {data, Data}} ->
+            BinaryData = iolist_to_binary(Data),
+            io:fwrite("~ts\n", [BinaryData]),
+            do_recieve(Port)
+        ;
+        {Port, closed} -> {ok};
+        {'EXIT', Port, Reason} -> 
+            exit(Reason),
+            {err, Reason};
+        {Port, {exit_status, Code}} ->
+            {ok, Code};
+        _ -> {err, "Something went wrong"}
     end
 .
