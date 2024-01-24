@@ -1,3 +1,9 @@
+## 0.5.0 (2024-01-23)
+- [`8f3a72de`](https://github.com/Enderchief/esgleam/commit/8f3a72deb125a544d125b29ffbf8b772cd3c636a) Command output when using Erlang target works.
+
+## 0.4.7 (2024-01-21)
+- [`8f06df5b`](https://github.com/Enderchief/esgleam/commit/8f06df5b61886f404f77a1a4e6ef3c46e6c3fb39) New config option to set esbuild platform.
+
 ## 0.4.5 (2024-01-21)
 - [`685bffe3`](https://github.com/Enderchief/esgleam/commit/685bffe381745d3e3bc69a1b82ec88bd7f8fc32b) Fix issue with os and arch checking not working on Deno leading to an error.
 
