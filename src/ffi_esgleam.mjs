@@ -98,7 +98,7 @@ export async function do_fetch(url, then) {
 }
 
 export function install() {
-  spawnSync('gleam', ['run', '-m', 'esgleam/install']);
+  spawnSync('gleam', ['run', '--target=erlang', '-m', 'esgleam/install'], {stdio: 'inherit'});
 }
 
 export function watch_gleam() {
