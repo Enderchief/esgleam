@@ -41,7 +41,6 @@ const platform_map = {
 
 export function get_os() {
   const platform = process.platform;
-  console.log('PLATFORM IS: [ ', platform, " ]");
   const res = platform_map[platform]?.();
   if (res) return new Ok(res);
   return new Error(res);
