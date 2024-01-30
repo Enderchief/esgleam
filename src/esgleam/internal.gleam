@@ -5,33 +5,22 @@ import gleam/option.{type Option, Some}
 import simplifile
 import gleam/string
 
-@target(erlang)
-type Charlist
-
 @target(javascript)
-pub fn exec_shell(command: String, cwd: String) -> Nil {
-  do_exec_shell(string.split(command, on: " "), cwd)
+pub fn exec_shell(command: String) -> Nil {
+  do_exec_shell(string.split(command, on: " "))
 }
 
 @target(javascript)
 @external(javascript, "../ffi_esgleam.mjs", "exec_shell")
-pub fn do_exec_shell(command: List(String), cwd: String) -> Nil
-
-@target(erlang)
-@external(erlang, "unicode", "characters_to_list")
-fn characters_to_list(chacters: String) -> Charlist
-
-@target(erlang)
-@external(erlang, "os", "cmd")
-fn os_cmd(command: Charlist) -> Nil
+pub fn do_exec_shell(command: List(String)) -> Nil
 
 @target(erlang)
 @external(erlang, "ffi_esgleam", "do_exec")
 fn exec_erl(cmd: String, args: List(String)) -> Result(Nil, String)
 
 @target(erlang)
-pub fn exec_shell(command: String, cwd: String) -> Nil {
-  let [cmd, ..args] = string.split(command, on: " ")
+pub fn exec_shell(command: String) -> Nil {
+  let assert [cmd, ..args] = string.split(command, on: " ")
   let assert Ok(_) = exec_erl(cmd, args)
   Nil
 }

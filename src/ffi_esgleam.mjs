@@ -24,9 +24,9 @@ import { Ok, Error } from './gleam.mjs';
 
 import { entries } from './streaming_tar.mjs';
 
-export function exec_shell(command, cwd) {
+export function exec_shell(command) {
   command = command.toArray();
-  spawnSync(command[0], command.slice(1), { cwd, stdio: 'inherit' });
+  spawnSync(command[0], command.slice(1), { cwd: '.', stdio: 'inherit' });
 }
 
 /** @type {Partial<Record<NodeJS.Platform, () => import('../build/dev/javascript/esgleam/esgleam/mod/platform.d.mts').OsName$>>} */

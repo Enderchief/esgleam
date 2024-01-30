@@ -237,7 +237,7 @@ fn do_bundle(config: Config) {
     False -> fn() { Nil }
   }
 
-  internal.exec_shell(cmd, ".")
+  internal.exec_shell(cmd)
 }
 
 fn format_to_string(format: Format) {
