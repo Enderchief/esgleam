@@ -2,6 +2,9 @@
 
 -export([get_arch/0, get_os/0, do_fetch/1, do_exec/2]).
 
+install_dir() -> "./build/dev/bin".
+% pkg_dir() -> install_dir() + "/package/bin".
+
 -spec get_arch() -> {ok, x64 | ia32 | arm64 | arm | ppc64} | {err, string()}.
 get_arch() ->
     % #TODO: find out how to detect if it's not ia32/x64 for windows :P
@@ -65,10 +68,10 @@ fetch_tarball(Url) ->
     {ok, {{_, 200, _}, _, Binary}} = httpc:request(get, {Url, []}, [], [{body_format, binary}]),
     case get_os() of
         {win32, _} -> {
-            ok = erl_tar:extract({binary, Binary}, [compressed, verbose, {cwd, "./priv"}, {files, ["package/bin/esbuild.exe"]}])
+            ok = erl_tar:extract({binary, Binary}, [compressed, verbose, {cwd, install_dir()}, {files, ["package/bin/esbuild.exe"]}])
         };
         _ -> {
-            ok = erl_tar:extract({binary, Binary}, [compressed, verbose, {cwd, "./priv"}, {files, ["package/bin/esbuild"]}])
+            ok = erl_tar:extract({binary, Binary}, [compressed, verbose, {cwd, install_dir()}, {files, ["package/bin/esbuild"]}])
         }
     end
 .

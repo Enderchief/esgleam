@@ -24,6 +24,9 @@ import { Ok, Error } from './gleam.mjs';
 
 import { entries } from './streaming_tar.mjs';
 
+const install_dir = "./build/dev/bin"
+const pkg_dir = `${install_dir}/package/bin`;
+
 export function exec_shell(command) {
   command = command.toArray();
   spawnSync(command[0], command.slice(1), { cwd: '.', stdio: 'inherit' });
@@ -81,9 +84,9 @@ export async function do_fetch(url, then) {
   for await (const entry of entries(tarStream)) {
     if (/(^|\/)esbuild(\.exe)?$/.test(entry.name)) {
       try {
-        await mkdir('./priv/package/bin', { recursive: true });
+        await mkdir(pkg_dir, { recursive: true });
       } catch {}
-      const exePath = entry.name.endsWith('.exe') ? './priv/package/bin/esbuild.exe' : './priv/package/bin/esbuild';
+      const exePath = entry.name.endsWith('.exe') ? `${pkg_dir}/esbuild.exe` : `${pkg_dir}/esbuild`;
       await writeFile(
         exePath,
         Buffer.from(await entry.arrayBuffer()),

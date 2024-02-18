@@ -188,7 +188,7 @@ fn do_bundle(config: Config) {
     Library -> string.join(entries_list, with: " ")
   }
 
-  let exe_path = "./priv/package/bin/" <> get_exe_name()
+  let exe_path = "./build/dev/bin/package/bin/" <> get_exe_name()
 
   let cmd =
     string_builder.from_string(exe_path <> " ")
