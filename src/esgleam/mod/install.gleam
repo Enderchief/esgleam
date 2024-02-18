@@ -2,7 +2,8 @@ import gleam/io
 import gleam/string
 import esgleam/mod/platform
 
-const base_url = "https://registry.npmjs.org/{#version}/latest"
+/// Should be updated for every esgleam release
+const tarball_url = "https://registry.npmjs.org/@esbuild/{#platform}/-/{#platform}-0.20.0.tgz"
 
 @target(erlang)
 @external(erlang, "ffi_esgleam", "do_fetch")
@@ -14,8 +15,8 @@ fn do_fetch(url: String, then: fn() -> Nil) -> Nil
 
 @target(erlang)
 /// installs esbuild and take in a callback to run post install
-fn fetch_from_version(version: String, then callback: fn() -> Nil) {
-  let url = string.replace(base_url, "{#version}", version)
+fn fetch_from_version(platform: String, then callback: fn() -> Nil) {
+  let url = string.replace(tarball_url, "{#platform}", platform)
   io.println("Fetching esbuild from: " <> url)
   do_fetch(url)
   callback()
@@ -23,8 +24,8 @@ fn fetch_from_version(version: String, then callback: fn() -> Nil) {
 
 @target(javascript)
 /// installs esbuild and take in a callback to run post install
-fn fetch_from_version(version: String, then callback: fn() -> Nil) {
-  let url = string.replace(base_url, "{#version}", version)
+fn fetch_from_version(platform: String, then callback: fn() -> Nil) {
+  let url = string.replace(tarball_url, "{#platform}", platform)
   io.println("Fetching esbuild from: " <> url)
   do_fetch(url, callback)
 }

@@ -66,17 +66,10 @@ export function get_arch() {
 }
 
 /**
- * @param {string} url
+ * @param {string} tarball_url 
  * @param {VoidFunction} then 
  */
-export async function do_fetch(url, then) {
-  const info_res = await fetch(url);
-  if (!info_res.ok)
-    return console.error(
-      `Oh no. Something went wrong. Error fetching "${url}"\n${await info_res.text()}`
-    );
-  const content = await info_res.json();
-  const tarball_url = content.dist.tarball;
+export async function do_fetch(tarball_url, then) {
   console.log(`Fetching tarball from: ${tarball_url}`);
   const tarResp = await fetch(tarball_url);
   const tarStream = tarResp.body?.pipeThrough(new DecompressionStream('gzip'));

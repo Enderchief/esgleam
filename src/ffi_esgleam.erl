@@ -3,7 +3,6 @@
 -export([get_arch/0, get_os/0, do_fetch/1, do_exec/2]).
 
 install_dir() -> "./build/dev/bin".
-% pkg_dir() -> install_dir() + "/package/bin".
 
 -spec get_arch() -> {ok, x64 | ia32 | arm64 | arm | ppc64} | {err, string()}.
 get_arch() ->
@@ -52,19 +51,12 @@ get_os() ->
         {unix, Os} -> {err, Os}
     end.
 
+
 -spec do_fetch(string()) -> {}.
 do_fetch(Url) ->
+    io:fwrite("Fetching tarball from: ~s\n", [Url]),
     inets:start(),
     ssl:start(),
-    {ok, {{_, 200, _}, _, Body}} = httpc:request(get, {Url, []}, [], []),
-    {ok, Res} = thoas:decode(Body),
-    #{<<"dist">> := #{<<"tarball">> := TarUrl}} = Res,
-    fetch_tarball(TarUrl)
-.
-
--spec fetch_tarball(string()) -> {}.
-fetch_tarball(Url) ->
-    io:fwrite("Fetching tarball from: ~s\n", [Url]),
     {ok, {{_, 200, _}, _, Binary}} = httpc:request(get, {Url, []}, [], [{body_format, binary}]),
     case get_os() of
         {win32, _} -> {

@@ -47,7 +47,7 @@ pub fn get_package_name() {
     Ppc64 -> "ppc64"
   }
 
-  "@esbuild/" <> os_str <> "-" <> arch_str
+  os_str <> "-" <> arch_str
 }
 
 pub fn get_exe_name() {

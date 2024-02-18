@@ -225,8 +225,6 @@ fn do_bundle(config: Config) {
     |> append(config.raw)
     |> string_builder.to_string
 
-  io.debug(exe_path)
-  io.debug(simplifile.is_file(exe_path))
   case simplifile.is_file(exe_path) {
     False -> install.fetch()
     True -> Nil
