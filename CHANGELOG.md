@@ -1,3 +1,10 @@
+## 0.6.0 (2024-02-17)
+- [`b90a06e`](https://github.com/Enderchief/esgleam/commit/b90a06ec26f00e741344173fba7e3650e0e107f5) Now installs predefined version of esbuild.
+- [`b90a06e`](https://github.com/Enderchief/esgleam/commit/b90a06ec26f00e741344173fba7e3650e0e107f5) Remove thoas as a dependency
+- [`fa07ede`](https://github.com/Enderchief/esgleam/commit/fa07ede7f2098bb61d2dfb0eb89cf2d10758f89b) Location of esbuild binary is now outside of the `priv` folder and hidden in the `build` folder.
+- [`cecd4b9`](https://github.com/Enderchief/esgleam/commit/cecd4b94e1fd08bbac69a23db3d4aa54a77e2cd1) esbuild autoinstallation works with Deno.
+- [`d8e41e8`](https://github.com/Enderchief/esgleam/commit/d8e41e8da7b544c842ff60a792d9298a0542d4fd) CLI no longer defaults to using Deno.
+
 ## 0.5.0 (2024-01-23)
 - [`8f3a72de`](https://github.com/Enderchief/esgleam/commit/8f3a72deb125a544d125b29ffbf8b772cd3c636a) Command output when using Erlang target works.
 
