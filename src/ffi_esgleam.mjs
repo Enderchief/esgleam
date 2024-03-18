@@ -6,6 +6,7 @@ import { resolve } from 'node:path';
 import { Buffer } from 'node:buffer';
 import { default as process } from 'node:process';
 import {
+  Android,
   Win32,
   Linux,
   Darwin,
@@ -34,6 +35,7 @@ export function exec_shell(command) {
 
 /** @type {Partial<Record<NodeJS.Platform, () => import('../build/dev/javascript/esgleam/esgleam/mod/platform.d.mts').OsName$>>} */
 const platform_map = {
+  android: () => new Android(),
   darwin: () => new Darwin(),
   freebsd: () => new Freebsd(),
   linux: () => new Linux(),

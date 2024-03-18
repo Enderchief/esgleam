@@ -2,6 +2,7 @@
 
 pub type OsName {
   Win32
+  Android
   Linux
   Darwin
   Solaris
@@ -32,6 +33,7 @@ pub fn get_package_name() {
 
   let os_str = case os {
     Win32 -> "win32"
+    Android -> "android"
     Linux -> "linux"
     Darwin -> "darwin"
     Solaris | Sunos -> "sunos"
