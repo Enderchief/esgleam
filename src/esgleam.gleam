@@ -1,13 +1,13 @@
-import gleam/io
-import gleam/string
-import gleam/list
-import gleam/option.{type Option, None, Some}
-import gleam/result
-import gleam/string_builder.{append, append_builder, from_strings}
-import simplifile
 import esgleam/internal
 import esgleam/mod/install
 import esgleam/mod/platform.{get_exe_name}
+import gleam/io
+import gleam/list
+import gleam/option.{type Option, None, Some}
+import gleam/result
+import gleam/string
+import gleam/string_builder.{append, append_builder, from_strings}
+import simplifile
 
 /// Kind of output
 pub type Kind {
@@ -226,8 +226,8 @@ fn do_bundle(config: Config) {
     |> string_builder.to_string
 
   case simplifile.is_file(exe_path) {
-    False -> install.fetch()
-    True -> Nil
+    Error(_) -> install.fetch()
+    Ok(_) -> Nil
   }
   io.println("$ " <> cmd)
 
