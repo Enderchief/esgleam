@@ -40,6 +40,9 @@ pub type Platform {
 /// Config for esbuild
 pub type Config {
   Config(
+    /// If true, automatically install esbuild if has not been installed (needs Erlang installed)
+    /// default `True`.
+    autoinstall: Bool,
     /// Output directory
     outdir: String,
     /// List of entry points supplied
@@ -82,6 +85,7 @@ pub type Config {
 /// ```
 pub fn new(outdir path: String) -> Config {
   Config(
+    autoinstall: True,
     outdir: path,
     entry_points: [],
     format: Esm,
@@ -94,6 +98,12 @@ pub fn new(outdir path: String) -> Config {
     watch: False,
     raw: "",
   )
+}
+
+/// Boolean for autoinstalling esbuild if it is not found.
+/// If `True`, requires erlang to be install on the system.
+pub fn autoinstall(config: Config, do_install: Bool) -> Config {
+  Config(..config, autoinstall: do_install)
 }
 
 /// [Entry points](https://esbuild.github.io/api/#entry-points)
@@ -230,9 +240,13 @@ fn do_bundle(config: Config) {
     |> append(config.raw)
     |> string_tree.to_string
 
-  case simplifile.is_file(exe_path) {
-    Error(_) -> install.fetch()
-    Ok(_) -> Nil
+  case config.autoinstall {
+    True ->
+      case simplifile.is_file(exe_path) {
+        Error(_) -> install.fetch()
+        Ok(_) -> Nil
+      }
+    False -> Nil
   }
   io.println("$ " <> cmd)
 
