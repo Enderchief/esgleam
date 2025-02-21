@@ -6,7 +6,7 @@ import gleam/list
 import gleam/option.{type Option, None, Some}
 import gleam/result
 import gleam/string
-import gleam/string_builder.{append, append_builder, from_strings}
+import gleam/string_tree.{append, append_tree, from_strings}
 import simplifile
 
 /// Kind of output
@@ -44,38 +44,38 @@ pub type Config {
     outdir: String,
     /// List of entry points supplied
     entry_points: List(String),
-    /// Output format for JavaScript. See [`Format`](#Format)   
+    /// Output format for JavaScript. See [`Format`](#Format)
     /// default `Esm`
     format: Format,
-    /// Kind for output   
+    /// Kind for output
     /// default `Library`
     kind: Kind,
     /// default `False`
     minify: Bool,
-    /// List of [target environments](https://esbuild.github.io/api/#target)   
+    /// List of [target environments](https://esbuild.github.io/api/#target)
     /// default `[]`
     target: List(String),
-    /// The root directory for the dev server (run server when defined)   
+    /// The root directory for the dev server (run server when defined)
     /// default `None`
     serve: Option(String),
-    /// Generate sourcemap for JavaScript   
+    /// Generate sourcemap for JavaScript
     /// default `False`
     sourcemap: Bool,
-    /// Platform for the output   
-    /// See [esbuild/platform](https://esbuild.github.io/api/#platform) for what each type does   
+    /// Platform for the output
+    /// See [esbuild/platform](https://esbuild.github.io/api/#platform) for what each type does
     /// default `Neutral`
     platform: Option(Platform),
-    /// Enable watchmode. Bundles files on change   
-    /// Note: `gleam build` need to be run manually   
+    /// Enable watchmode. Bundles files on change
+    /// Note: `gleam build` need to be run manually
     /// default `False`
     watch: Bool,
-    /// raw flags to pass to esbuild   
+    /// raw flags to pass to esbuild
     /// default `""`
     raw: String,
   )
 }
 
-/// Start to create a build script   
+/// Start to create a build script
 /// ```gleam
 /// > esbuild.new("./dist/static")
 /// Config("./dist/static", ...)
@@ -96,7 +96,7 @@ pub fn new(outdir path: String) -> Config {
   )
 }
 
-/// [Entry points](https://esbuild.github.io/api/#entry-points)   
+/// [Entry points](https://esbuild.github.io/api/#entry-points)
 /// Can be use multiple times
 pub fn entry(config: Config, path: String) -> Config {
   Config(..config, entry_points: [path, ..config.entry_points])
@@ -107,14 +107,14 @@ pub fn format(config: Config, format: Format) {
   Config(..config, format: format)
 }
 
-/// Kind for output. see [`Kind`](#kind)   
+/// Kind for output. see [`Kind`](#kind)
 /// if set to `Script`, will ignore all entries except the first and will call its `main` function.
 pub fn kind(config: Config, kind: Kind) {
   Config(..config, kind: kind)
 }
 
 /// [Target](https://esbuild.github.io/api/#target) for transpiled JavaScript.
-/// Can be used mutiple times   
+/// Can be used mutiple times
 /// ```gleam
 /// > esbuild.new("./dist/static")
 /// > |> esbuild.target("es2020")
@@ -191,10 +191,10 @@ fn do_bundle(config: Config) {
   let exe_path = "./build/dev/bin/package/bin/" <> get_exe_name()
 
   let cmd =
-    string_builder.from_string(exe_path <> " ")
+    string_tree.from_string(exe_path <> " ")
     |> append(entries)
     |> append(" --bundle")
-    |> append_builder(case config.kind {
+    |> append_tree(case config.kind {
       Script ->
         from_strings([
           " --outfile="
@@ -223,7 +223,7 @@ fn do_bundle(config: Config) {
     |> append(string.join(config.target, with: ","))
     |> if_some(config.serve, flag: " --servedir=")
     |> append(config.raw)
-    |> string_builder.to_string
+    |> string_tree.to_string
 
   case simplifile.is_file(exe_path) {
     Error(_) -> install.fetch()
@@ -248,10 +248,10 @@ fn format_to_string(format: Format) {
 }
 
 fn if_true(
-  builder: string_builder.StringBuilder,
+  builder: string_tree.StringTree,
   predicate: Bool,
   value: String,
-) -> string_builder.StringBuilder {
+) -> string_tree.StringTree {
   case predicate {
     True -> value
     False -> ""
@@ -260,10 +260,10 @@ fn if_true(
 }
 
 fn if_some(
-  builder: string_builder.StringBuilder,
+  builder: string_tree.StringTree,
   option opt: Option(String),
   flag flag: String,
-) -> string_builder.StringBuilder {
+) -> string_tree.StringTree {
   case opt {
     Some(value) -> flag <> value
     None -> ""

@@ -1,4 +1,4 @@
-import gleam/regex
+import gleam/regexp as regex
 import gleam/result
 import gleam/list
 import gleam/option.{type Option, Some}
