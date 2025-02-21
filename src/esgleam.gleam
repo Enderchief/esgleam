@@ -201,7 +201,12 @@ fn do_bundle(config: Config) {
           <> config.outdir
           <> "/"
           <> internal.get_project_name()
-          <> ".mjs",
+          <> {
+            case config.format {
+              Esm -> ".mjs"
+              _ -> ".js"
+            }
+          },
         ])
       Library -> from_strings([" --outdir=", config.outdir])
     })
