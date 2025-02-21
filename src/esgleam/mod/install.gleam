@@ -1,6 +1,6 @@
+import esgleam/mod/platform
 import gleam/io
 import gleam/string
-import esgleam/mod/platform
 
 /// Should be updated for every esgleam release
 const tarball_url = "https://registry.npmjs.org/@esbuild/{#platform}/-/{#platform}-0.20.0.tgz"

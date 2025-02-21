@@ -1,9 +1,9 @@
-import gleam/regexp as regex
-import gleam/result
 import gleam/list
 import gleam/option.{type Option, Some}
-import simplifile
+import gleam/regexp as regex
+import gleam/result
 import gleam/string
+import simplifile
 
 @target(javascript)
 pub fn exec_shell(command: String) -> Nil {
