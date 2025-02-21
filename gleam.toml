@@ -1,5 +1,5 @@
 name = "esgleam"
-version = "0.7.0"
+version = "0.8.0"
 gleam = ">= 0.32.0"
 
 description = "esbuild for Gleam"
@@ -13,7 +13,7 @@ target = "javascript"
 typescript_declarations = true
 
 [dependencies]
-gleam_stdlib = "~> 0.34"
+gleam_stdlib = "~> 0.44"
 simplifile = ">= 2.0.0 and < 3.0.0"
 gleam_regexp = ">= 1.1.0 and < 2.0.0"
 

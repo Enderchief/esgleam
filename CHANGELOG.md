@@ -1,3 +1,13 @@
+## 0.8.0
+- [`d9ffa4b`](https://github.com/Enderchief/esgleam/commit/d9ffa4b15e588862ec1bee919e42a347b5af59a7) Create `config.autoinstall`
+- [`c262c13`](https://github.com/Enderchief/esgleam/commit/c262c136a640278f90c40407e1ddfb8d1e83581d) Only output `.mjs` if `config.format=Esm`
+- [`d490afc`](https://github.com/Enderchief/esgleam/commit/d490afc1e6b7e8aa5c737132678c513321cf42e1) Update broken dependencies
+- [`b02d617`](https://github.com/Enderchief/esgleam/commit/b02d617a1c8631e95c69f5826bc0324aeeae8cbe) Update package version
+- [`4796983`](https://github.com/Enderchief/esgleam/commit/4796983a9c1f5d66ddb4b8f886b8ad414b77fd2d) Add Android arm64 support
+
+## 0.7.0 (2024-10-03)
+- [`75f0356`](https://github.com/Enderchief/esgleam/commit/75f03563239fe220be6a41b43cb2c3a1f6fc5c40) Updated simplifile
+
 ## 0.6.0 (2024-02-17)
 - [`b90a06e`](https://github.com/Enderchief/esgleam/commit/b90a06ec26f00e741344173fba7e3650e0e107f5) Now installs predefined version of esbuild.
 - [`b90a06e`](https://github.com/Enderchief/esgleam/commit/b90a06ec26f00e741344173fba7e3650e0e107f5) Remove thoas as a dependency
@@ -28,7 +38,7 @@
 - [`b7a1ab8`](https://github.com/Enderchief/esgleam/commit/b7a1ab8bbb89f89154981cd735b50411081933e8) Install esbuild automatically if not installed.
 
 ## 0.4.1 (2024-01-13)
-- [`00069ae`](https://github.com/Enderchief/esgleam/commit/00069ae870f63d16c54bd6320225b62d28390309) Rename `fetch_version` to `fetch_from_version`. 
+- [`00069ae`](https://github.com/Enderchief/esgleam/commit/00069ae870f63d16c54bd6320225b62d28390309) Rename `fetch_version` to `fetch_from_version`.
 - [`00069ae`](https://github.com/Enderchief/esgleam/commit/00069ae870f63d16c54bd6320225b62d28390309) Add `fetch_latest` as shorthand for `fetch_from_version(platform.get_package_name(), _)`.
 
 ## 0.4.0 (2024-01-13)
