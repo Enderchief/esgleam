@@ -244,7 +244,8 @@ fn do_bundle(config: Config) {
     True ->
       case simplifile.is_file(exe_path) {
         Error(_) -> install.fetch()
-        Ok(_) -> Nil
+        Ok(False) -> install.fetch()
+        Ok(True) -> Nil
       }
     False -> Nil
   }
