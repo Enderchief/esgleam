@@ -3,7 +3,7 @@ import gleam/io
 import gleam/string
 
 /// Should be updated for every esgleam release
-const tarball_url = "https://registry.npmjs.org/@esbuild/{#platform}/-/{#platform}-0.20.0.tgz"
+const tarball_url = "https://registry.npmjs.org/@esbuild/{#platform}/-/{#platform}-0.25.1.tgz"
 
 @target(erlang)
 @external(erlang, "ffi_esgleam", "do_fetch")
