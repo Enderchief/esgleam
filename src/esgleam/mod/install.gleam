@@ -3,7 +3,7 @@ import gleam/io
 import gleam/string
 
 /// Should be updated for every esgleam release
-const tarball_url = "https://registry.npmjs.org/@esbuild/{#platform}/-/{#platform}-0.20.0.tgz"
+const tarball_url = "https://registry.npmjs.org/@esbuild/{#platform}/-/{#platform}-0.27.0.tgz"
 
 @target(erlang)
 @external(erlang, "ffi_esgleam", "do_fetch")
@@ -41,11 +41,11 @@ pub fn fetch() {
 }
 
 @target(javascript)
-/// Syncrounously install `esbuild` under both targets
+/// Syncronously install `esbuild` under both targets
 @external(javascript, "../../ffi_esgleam.mjs", "install")
 pub fn fetch() -> Nil
 
-/// WARNING: on JavaScript, this is promise based   
+/// WARNING: on JavaScript, this is promise based
 /// it is perferable to use `install.fetch` or `gleam run -m esgleam/install`
 pub fn internal_fetch() {
   fetch_latest(fn() { io.println("Installed esbuild") })

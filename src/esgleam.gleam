@@ -85,7 +85,7 @@ pub type Config {
 /// ```
 pub fn new(outdir path: String) -> Config {
   Config(
-    autoinstall: True,
+    autoinstall: False,
     outdir: path,
     entry_points: [],
     format: Esm,
@@ -163,8 +163,10 @@ pub fn raw(config: Config, args: String) {
 
 /// Executes `esbuild` with the provided config parsed as CLI arguments.
 pub fn bundle(config: Config) {
-  simplifile.create_directory_all(config.outdir)
-  |> result.map(fn(_) { do_bundle(config) })
+  case simplifile.create_directory_all(config.outdir) {
+    Ok(_) -> do_bundle(config)
+    Error(_) -> Error("Failed to create output directory")
+  }
 }
 
 fn do_bundle(config: Config) {
@@ -243,11 +245,27 @@ fn do_bundle(config: Config) {
   case config.autoinstall {
     True ->
       case simplifile.is_file(exe_path) {
-        Error(_) -> install.fetch()
-        Ok(_) -> Nil
+        Error(_) | Ok(False) -> install.fetch()
+        Ok(True) -> Nil
       }
     False -> Nil
   }
+
+  let exe_check = case simplifile.is_file(exe_path) {
+    Ok(True) -> Ok(Nil)
+    Ok(False) ->
+      case config.autoinstall {
+        True -> Ok(install.fetch())
+        False ->
+          Error(
+            "esbuild is not installed, run `gleam run esgleam/install` or set Config.autoinstall to True.",
+          )
+      }
+    Error(_) -> Error("Gleam does not have permission to read the executable")
+  }
+
+  use _ <- result.map(exe_check)
+
   io.println("$ " <> cmd)
 
   case config.watch {
@@ -256,6 +274,7 @@ fn do_bundle(config: Config) {
   }
 
   internal.exec_shell(cmd)
+  Ok(Nil)
 }
 
 fn format_to_string(format: Format) {
