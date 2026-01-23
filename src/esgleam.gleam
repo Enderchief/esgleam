@@ -258,7 +258,7 @@ fn do_bundle(config: Config) {
         True -> Ok(install.fetch())
         False ->
           Error(
-            "esbuild is not installed, run `gleam run esgleam/install` or set Config.autoinstall to True.",
+            "esbuild is not installed, run `gleam run -m esgleam/install` or set Config.autoinstall to True.",
           )
       }
     Error(_) -> Error("Gleam does not have permission to read the executable")
