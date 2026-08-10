@@ -32,6 +32,7 @@
 
 ```gleam
 import esgleam
+import gleam/option.{None}
 import gleeunit
 import gleeunit/should
 
